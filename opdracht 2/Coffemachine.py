@@ -68,7 +68,6 @@ class CoffeeMachine:
             self.verminder = [250, 0, 16, 0, 1, 4] # water, milk, coffee beans, cacao, cups, money
             if self.beschikbaar_check(): # kijkt of supplies available
                 self.verminder_supplies() # als ze available zijn dan verminderen
-                saldo == saldo - 4
 
         elif self.keuze == '2':
             self.verminder = [350, 75, 20, 0, 1, 7]
