@@ -2,13 +2,14 @@ class CoffeeMachine:
 
     running = False
 
-    def __init__(self, water, melk, bonen, cacao, bekers, geld):
+    def __init__(self, water, melk, bonen, cacao, bekers, geld, saldo):
         self.water = water
         self.melk = melk
         self.bonen = bonen
         self.cacao = cacao
         self.bekers = bekers
         self.geld = geld
+        self.saldo = saldo
 
         # als de machine uit is gaat het aan
         if not CoffeeMachine.running:
@@ -16,7 +17,7 @@ class CoffeeMachine:
 
     def start(self):
         self.running = True
-        self.actie = input("Wat wilt u doen (kopen, vullen, geld opnemen, overzicht, exit):\n")
+        self.actie = input("Wat wilt u doen (kopen, vullen (admin), geld opnemen (admin), overzicht (admin), exit (admin)):\n")
         print()
         # Mogelijkheden die het koffie apparaat kan uitvoeren
         if self.actie == "kopen":
@@ -34,6 +35,13 @@ class CoffeeMachine:
         print()
         self.start()
 
+    def keuze_bevestigen(self):
+        print('Weet u zeker dat u dat wilt bestellen?')
+        zeker = input('0 is ja, 1 is nee ')
+        if zeker == '1':
+            self.kopen()
+
+
     def beschikbaar_check(self): # kijkt of er genoeg materialen zijn om het te maken.
         self.not_available = "" # door checken of de waarde niet onder de 0 gaat.
         if self.water - self.verminder[0] < 0:
@@ -46,6 +54,8 @@ class CoffeeMachine:
             self.not_available = "cacao"
         elif self.bekers - self.verminder[4] < 0:
             self.not_available = "bekers"
+        elif self.saldo - self.verminder[6] < 0:
+            self.not_available = "saldo"
 
         if self.not_available != "": # als iets onder de 0 is na verminderen
             print(f"Sorry, niet genoeg {self.not_available}!")
@@ -62,27 +72,38 @@ class CoffeeMachine:
         self.bekers -= self.verminder[4]
         self.geld += self.verminder[5]
 
+    def verminder_saldo(self):
+        self.saldo -= self.verminder[6]
+
     def kopen(self):
         self.keuze = input("Wat wilt u kopen? 1 - espresso $4, 2 - latte $7, 3 - cappuccino $6, 4 - chocolademelk $3, terug - naar hoofdmenu:\n")
         if self.keuze == '1':
-            self.verminder = [250, 0, 16, 0, 1, 4] # water, milk, coffee beans, cacao, cups, money
-            if self.beschikbaar_check(): # kijkt of supplies available
-                self.verminder_supplies() # als ze available zijn dan verminderen
+            self.verminder = [250, 0, 16, 0, 1, 4, 4] # water, milk, coffee beans, cacao, cups, money, met hoeveel saldo down gaat
+            self.keuze_bevestigen()
+            if self.beschikbaar_check():
+                self.verminder_supplies()
+                self.verminder_saldo()
 
         elif self.keuze == '2':
-            self.verminder = [350, 75, 20, 0, 1, 7]
+            self.verminder = [350, 75, 20, 0, 1, 7, 7]
+            self.keuze_bevestigen()
             if self.beschikbaar_check():
                 self.verminder_supplies()
+                self.verminder_saldo()
 
         elif self.keuze == "3":
-            self.verminder = [200, 100, 12, 0, 1, 6]
+            self.verminder = [200, 100, 12, 0, 1, 6, 6]
+            self.keuze_bevestigen()
             if self.beschikbaar_check():
                 self.verminder_supplies()
+                self.verminder_saldo()
 
         elif self.keuze == "4":
-            self.verminder = [200, 100, 0, 100, 1, 3]
+            self.verminder = [200, 100, 0, 25, 1, 3, 3]
+            self.keuze_bevestigen()
             if self.beschikbaar_check():
                 self.verminder_supplies()
+                self.verminder_saldo()
 
         elif self.keuze == "terug": # als de gebruikers toch iets anders wil
             self.terug_hoofdmenu()
@@ -110,7 +131,11 @@ class CoffeeMachine:
         print(f"{self.cacao} cacao")
         print(f"{self.bekers} bekers")
         print(f"${self.geld} geld")
+        print(f"${self.saldo} saldo")
         self.terug_hoofdmenu()
 
-CoffeeMachine(400, 540, 120, 110, 9, 550) # begin waardes voor ingredienten
+pinpas = input('Hoeveel geld staat er op uw pinpas?')
+if pinpas < '0':
+    pinpas = pinpas == 0
+CoffeeMachine(400, 540, 120, 110, 9, 550, float(pinpas)) # begin waardes voor ingredienten
             # water, melk, bonen, cacao, bekers, geld
