@@ -123,14 +123,14 @@ class CoffeeMachine:
         self.geld -= self.geld
         self.terug_hoofdmenu()
 
-    def overzicht(self): # weergeeft de hoeveelheid grondstoffen die aanwezig zijn
-        print(f"The coffee machine has:")
-        print(f"{self.water} water")
-        print(f"{self.melk} melk")
-        print(f"{self.bonen} bonen")
-        print(f"{self.cacao} cacao")
+    def overzicht(self):  # weergeeft de hoeveelheid grondstoffen die aanwezig zijn
+        print(f"Deze koffiemachine bevat:")
+        print(f"{self.water} ml water")
+        print(f"{self.melk} ml melk")
+        print(f"{self.bonen} gr bonen")
+        print(f"{self.cacao} gr cacao")
         print(f"{self.bekers} bekers")
-        print(f"${self.geld} geld")
+        print(f"${self.geld} omzet")
         print(f"${self.saldo} saldo")
         self.terug_hoofdmenu()
 
