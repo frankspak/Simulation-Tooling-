@@ -3,15 +3,13 @@ import random
 
 class CarAgent(Agent):
 
-    def __init__(self, unique_id, model):
-        super().__init__(unique_id, model)
-        self.snelheid = 4
-
-    snelheid = 5
     max_snelheid = 5
 
-    def auto(self):
-        self.snelheid = CarAgent.snelheid
+    # Elke auto begint met een random snelheid, van 0 T/M 5.
+    def __init__(self, unique_id, model):
+        super().__init__(unique_id, model)
+        self.snelheid = random.randint(0, 5)
+
 
     def optrekken(self):
         if self.snelheid < CarAgent.max_snelheid:
